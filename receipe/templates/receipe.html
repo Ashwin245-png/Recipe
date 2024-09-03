@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  Page Title
+{% endblock %}
+
+{% block content %}
+<div class='container mt-5 mb-3'>
+    <form class=' col-6 mx-auto card p-3 shadow-lg' method='post' enctype="multipart/form-data">
+        {% csrf_token %}
+        <h1>Add Receipe</h1>
+        <hr></hr>
+        <div class="mb-3" method='post'>
+          <label  class="form-label">Receipe name</label>
+          <input name='receipe_name' type="text" class="form-control">
+        </div>
+        <div class="mb-3" >
+            <label  class="form-label">Receipe description</label>
+            <textarea name='receipe_description' class="form-control" aria-label="With textarea"></textarea>
+        </div>
+
+        <div class="input-group mb-3">
+            <input name='receipe_image' type="file" class="form-control" id="inputGroupFile02">
+            <label class="input-group-text" for="inputGroupFile02" >Upload</label>
+        </div>
+        <button type="submit" class="btn btn-success mb-3">Add Receipe</button>
+      </form>
+    <hr class='mt-5'>
+      <form class="d-flex mt-5 container">
+        <input name='search' class="form-control me-2" type="search" placeholder="Search Food" aria-label="Search">
+        <button class="btn btn-success" type="submit">Search</button>
+      </form>
+
+
+
+   </div>
+{% if receipe %}
+   <div class='container mt-5'>
+    <table class="table table-success table-striped">
+        <thead>
+          <tr>
+            <th scope="col">No</th>
+            <th scope="col">Receipe name</th>
+            <th scope="col">Receipe description</th>
+            <th scope="col">Receipe image</th>
+            <th scope='col'>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+        {% for i in receipe%}
+          <tr>
+            <th scope="row">{{forloop.counter}}</th>
+            <td>{{i.receipe_name}}</td>
+            <td>{{i.receipe_description}}</td>
+            <td><img src='/media/{{i.receipe_image}}' style='height: 100px'></td>
+            <td>
+            <button class='btn btn-danger mb-3'>
+            <a href='/delete-receipe/{{i.id}}/' class='link-light' style='text-decoration: none;'>Delete</a>
+            </button>  
+            <button class='btn btn-primary mb-3'>
+                <a href='/update-receipe/{{i.id}}/' class='link-light' style='text-decoration: none;'>Update</a>
+                </button>  
+            </td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+   </div>
+{% else %}
+   <p>No recipes found.</p>
+{% endif %}
+
+
+
+
+{% endblock %}
